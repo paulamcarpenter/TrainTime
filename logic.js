@@ -2,12 +2,13 @@
 // Make sure to match the configuration to the script version number in the HTML
 // (Ex. 3.0 != 3.7.0)
 var config = {
-  apiKey: "AIzaSyA5eYKsB8T2q6rMGdKSvac6eQsWTzsZEjE",
-  authDomain: "fir-recent-user.firebaseapp.com",
-  databaseURL: "https://fir-recent-user.firebaseio.com",
-  storageBucket: "fir-recent-user.appspot.com"
+    apiKey: "AIzaSyBOm4gAAOfNNTvUydkkyw4Eu-mw-vBnDfY",
+    authDomain: "project1-55512.firebaseapp.com",
+    databaseURL: "https://project1-55512.firebaseio.com",
+    projectId: "project1-55512",
+    storageBucket: "project1-55512.appspot.com",
+    messagingSenderId: "708182834951"
 };
-
 firebase.initializeApp(config);
 
 // Assign the reference to the database to a variable named 'database'
