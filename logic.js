@@ -106,7 +106,7 @@ $("#submit-bid").on("click", function(event) {
 
   else {
     // Alert
-    alert("Sorry that bid is too low. Try again.");
+    // alert("Sorry that bid is too low. Try again.");
   }
 
 });
