@@ -1,112 +1,67 @@
+// (document).ready(function(){
+
 // Initialize Firebase
-// Make sure to match the configuration to the script version number in the HTML
-// (Ex. 3.0 != 3.7.0)
-var config = {
-    apiKey: "AIzaSyBOm4gAAOfNNTvUydkkyw4Eu-mw-vBnDfY",
-    authDomain: "project1-55512.firebaseapp.com",
-    databaseURL: "https://project1-55512.firebaseio.com",
-    projectId: "project1-55512",
-    storageBucket: "project1-55512.appspot.com",
-    messagingSenderId: "708182834951"
-};
-firebase.initializeApp(config);
+    var config = {
+      apiKey: "AIzaSyBOm4gAAOfNNTvUydkkyw4Eu-mw-vBnDfY",
+      authDomain: "project1-55512.firebaseapp.com",
+      databaseURL: "https://project1-55512.firebaseio.com",
+      projectId: "project1-55512",
+      storageBucket: "project1-55512.appspot.com",
+      messagingSenderId: "708182834951"
+    };
+    firebase.initializeApp(config);
 
-// Assign the reference to the database to a variable named 'database'
-//var database = ...
-var database = firebase.database();
+    // Create a variable to reference the database
+    var database = firebase.database();
 
+    // Initial Values
+    var nameTrain = "";
+    var destTrain = "";
+    var firstTrain = 0;
+    var freqTrain = 0;
 
-// Initial Values
-var initialBid = 0;
-var initialBidder = "No one :-(";
-var highPrice = initialBid;
-var highBidder = initialBidder;
+    // Capture Button Click
+    $("#add-user").on("click", function() {
+      // Don't refresh the page!
+      event.preventDefault();
 
-// --------------------------------------------------------------
+      // YOUR TASK!!!
+      // Code in the logic for storing and retrieving the most recent user.
+      // Don't forget to provide initial data to your Firebase database.
+      nameTrain = $("#nameTrain-input").val();
+      destTrain = $("#destTrain-input").val();
+      firstTrain = $("#firstTrain-input").val();
+      freqTrain = $("#freqTrain-input").val();
 
-// At the initial load and subsequent value changes, get a snapshot of the stored data.
-// This function allows you to update your page in real-time when the firebase database changes.
-database.ref().on("value", function(snapshot) {
+      database.ref().push({
+        nameTrain: nameTrain,
+        destTrain: destTrain,
+        firstTrain: firstTrain,
+        freqTrain: freqTrain
+      });
 
-  // If Firebase has a highPrice and highBidder stored (first case)
-  if (snapshot.child("highBidder").exists() && snapshot.child("highPrice").exists()) {
+    });
 
-    // Set the variables for highBidder/highPrice equal to the stored values in firebase.
-    highPrice = $("#highPrice-input").val().trim();
-    highBidder = $("#highBidder-input").val().trim();
+    // Firebase watcher + initial loader HINT: .on("value")
+    database.ref().on("child_added", function(snapshot) {
 
+      // Log everything that's coming out of snapshot
+      console.log(snapshot.val());
+      console.log(snapshot.val().nameTrain);
+      console.log(snapshot.val().destTrain);
+      console.log(snapshot.val().firstTrain);
+      console.log(snapshot.val().freqTrain);
 
-    // Change the HTML to reflect the stored values
-      $("#highPrice-display").text(snapshot.val().highPrice);
-      $("#highBidder-display").text(snapshot.val().highBidder);
-     
+      // Change the HTML to reflect
+      $("#nameTrain-display").append(snapshot.val().nameTrain);
+      $("#destTrain-display").append(snapshot.val().destTrain);
+      $("#firstTrain-display").append(snapshot.val().firstTrain);
+      $("#freqTrain-display").append(snapshot.val().freqTrain);
 
-    // Print the data to the console.
-        console.log(highPrice);
-        console.log(highBidder);
-
-
-  }
-
-  // Else Firebase doesn't have a highPrice/highBidder, so use the initial local values.
-  else {
-
-    // Change the HTML to reflect the initial values
-      $("#highPrice-display").text(snapshot.val().highPrice);
-      $("#highBidder-display").text(snapshot.val().highBidder);
-
-    // Print the data to the console.
-        console.log(highPrice);
-        console.log(highBidder);
-
-  }
-
-
-// If any errors are experienced, log them to console.
-}, function(errorObject) {
-  console.log("The read failed: " + errorObject.code);
-});
-
-// --------------------------------------------------------------
-
-// Whenever a user clicks the submit-bid button
-$("#submit-bid").on("click", function(event) {
-  // Prevent form from submitting
-  event.preventDefault();
-
-  // Get the input values
+      // Handle the errors
+    }, function(errorObject) {
+      console.log("Errors handled: " + errorObject.code);
+    });
+  
 
 
-  // Log the Bidder and Price (Even if not the highest)
-  if (bidderPrice > highPrice) {
-
-    // Alert
-    alert("You are now the highest bidder.");
-
-    // Save the new price in Firebase
-      database.ref().set
-
-
-    // Log the new High Price
-    console.log(snapshot);
-
-
-    // Store the new high price and bidder name as a local variable
-    var highBidder = "";
-    var highPrice = "";
-
-
-    // Change the HTML to reflect the new high price and bidder
-
-    $("#highBidder-display").text(snapshot.val().highBidder);
-    $("#highPrice-display").text(snapshot.val().highPrice);
-
-    }
-
-
-  else {
-    // Alert
-    // alert("Sorry that bid is too low. Try again.");
-  }
-
-});
