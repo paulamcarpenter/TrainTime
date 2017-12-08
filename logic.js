@@ -2,12 +2,12 @@
 
 // Initialize Firebase
     var config = {
-      apiKey: "AIzaSyBOm4gAAOfNNTvUydkkyw4Eu-mw-vBnDfY",
-      authDomain: "project1-55512.firebaseapp.com",
-      databaseURL: "https://project1-55512.firebaseio.com",
-      projectId: "project1-55512",
-      storageBucket: "project1-55512.appspot.com",
-      messagingSenderId: "708182834951"
+      apiKey: "AIzaSyCdPjuC2Ig3yoG9EYxKeuEdyp6Hw1DDCF0",
+      authDomain: "train-time-a6f3b.firebaseapp.com",
+      databaseURL: "https://train-time-a6f3b.firebaseio.com",
+      projectId: "train-time-a6f3b",
+      storageBucket: "",
+      messagingSenderId: "1042194730041"
     };
     firebase.initializeApp(config);
 
@@ -15,10 +15,10 @@
     var database = firebase.database();
 
     // Initial Values
-    var nameTrain = "";
-    var destTrain = "";
-    // var firstTrain = 0;
-    // var freqTrain = 0;
+    var name = "";
+    var dest = "";
+    var next = 0;
+    var freq = 0;
 
     // Moment.js variables to be used for timing of Trains and Minutes Away
     // var randomDate = "02/23/1999";
@@ -26,54 +26,51 @@
     // var convertedDate = moment(randomDate, randomFormat);
 
     // Capture Button Click
-    $("#add-user").on("click", function() {
+    $("#addUser").on("click", function() {
       // Don't refresh the page!
-      event.preventDefault();
-
-      // YOUR TASK!!!
+      // event.preventDefault();
       // Code in the logic for storing and retrieving the most recent user.
-      // Don't forget to provide initial data to your Firebase database.
-      nameTrain = $("#nameTrain-input").val();
-      destTrain = $("#destTrain-input").val();
-      firstTrain = $("#firstTrain-input").val();
-      freqTrain = $("#freqTrain-input").val();
+      name = $("#nameInput").val().trim();
+      dest = $("#destInput").val().trim();
+      next = $("#nextInput").val().trim();
+      freq = $("#freqInput").val().trim();
 
       database.ref().push({
-        nameTrain: nameTrain,
-        destTrain: destTrain,
-        firstTrain: firstTrain,
-        freqTrain: freqTrain
+        name: name,
+        dest: dest,
+        next: next,
+        freq: freq
       });
 
     });
 
     // Firebase watcher + initial loader HINT: .on("value")
-    database.ref().on("child_added", function(snapshot) {
+    database.ref().on("child_added",function(snapshot) {
 
-      // Change the HTML to reflect
-      $("#nameTrain-display").append(snapshot.val().nameTrain);
-      $("#destTrain-display").append(snapshot.val().destTrain);
-      $("#firstTrain-display").append(snapshot.val().firstTrain);
-      $("#freqTrain-display").append(snapshot.val().freqTrain);
+      // Change the HTML to reflect.  Not sure if html or append or prepend here.
+      $("#nameDisplay").html(snapshot.val().name);
+      $("#destDisplay").html(snapshot.val().dest);
+      $("#nextDisplay").html(snapshot.val().next);
+      $("#freqDisplay").html(snapshot.val().freq);
 
       // Log everything that's coming out of snapshot
       console.log(snapshot.val());
-      console.log(snapshot.val().nameTrain);
-      console.log(snapshot.val().destTrain);
-      console.log(snapshot.val().firstTrain);
-      console.log(snapshot.val().freqTrain);
+      console.log(snapshot.val().name);
+      console.log(snapshot.val().dest);
+      console.log(snapshot.val().next);
+      console.log(snapshot.val().freq);
 
-      // Add trains to list
-      $("#full-member-list").append("<tr><td ='nameTrain'> " + snapshot.val().nameTrain 
-        + " </tr><td ='destTrain'> " + snapshot.val().destTrain 
-        + " </tr><td ='firstTrain'> " + snapshot.val().firstTrain 
-        + " </tr><td ='freqTrain'> " + snapshot.val().freqTrain + " </tr>");
+      // Add trains to list () Not sure if html or append or prepend here.
+      $("#full-member-list").append("<tr><td ='name'> " + snapshot.val().name 
+        + " </tr><td ='dest'> " + snapshot.val().dest
+        + " </tr><td ='next'> " + snapshot.val().next 
+        + " </tr><td ='freq'> " + snapshot.val().freq + " </tr>");
 
 
       // Handle the errors
     }, function(errorObject) {
-      console.log("Errors handled: " + errorObject.code);
-    });
+         console.log("Errors handled: " + errorObject.code);
+       });
   
 
 

@@ -8,7 +8,7 @@
     <title>Train Time!</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
     <script src="logic.js"></script> 
     <!-- <script src="https://code.jquery.com/jquery.js"></script> -->
     <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
@@ -43,17 +43,14 @@
                     <th>Destination</th>
                     <th>Frequency (Minutes)</th>
                     <th>Next Arrival</th>
-                    <th>Minutes Away</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td id="nameTrain-display"></td>
-                    <td id="destTrain"></td>
-                    <td id="freqTrain-display"></td>
-                    <td id="nextTrain-display"></td>
-                    <td id="minawayTrain-display"></td>
-                    <td
+                    <td id="nameDisplay"></td>
+                    <td id="destDisplay"></td>
+                    <td id="freqDisplay"></td>
+                    <td id="nextDisplay"></td>
                   </tr>
                 </tbody>
                 </table>
@@ -69,23 +66,23 @@
 
                <form>
                 <div class="form-group">
-                  <label for="nameTrain">Train Name</label>
-                  <input class="form-control" id="nameTrain" type="text">
+                  <label for="name">Train Name</label>
+                  <input class="form-control" id="name" type="text">
                 </div>
                 <div class="form-group">
-                  <label for="destTrain">Destination</label>
-                  <input class="form-control" id="destTrain" type="text">
+                  <label for="dest">Destination</label>
+                  <input class="form-control" id="dest" type="text">
                 </div>
                 <div class="form-group">
-                  <label for="nextTrain">Next Train Time (HH:mm - Military Time)</label>
-                  <input class="form-control" id="nextTrain" type="number">
+                  <label for="next">Next Train Time (HH:mm - Military Time)</label>
+                  <input class="form-control" id="next" type="number">
                 </div>
                 <div class="form-group">
-                  <label for="freqTrain">Frequency (Minutes)</label>
-                  <input class="form-control" id="freqTrain" type="number">
+                  <label for="freq">Frequency (Minutes)</label>
+                  <input class="form-control" id="freq" type="number">
                 </div>
 
-                <button class="btn btn-primary" id="submit-bid" type="submit">Submit</button>
+                <button class="btn btn-primary" id="addUser" type="submit">Submit</button>
               </form>
             </div>
           </div>
