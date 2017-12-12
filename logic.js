@@ -27,8 +27,8 @@
     var keyHolder = "";
     var getKey = "";
 
-  $(document).ready(function() {
 
+  $(document).ready(function() {
     // Moment.js variables to be used for timing of Trains and Minutes Away
     // Capture Button Click
     $("#add-train").on("click", function() {
@@ -68,34 +68,34 @@
   });
 
     // Firebase watcher + initial loader HINT: .on("child-added")
-dataRef.on("child_added",function(childSnapshot) {
+  dataRef.on("child_added",function(childSnapshot) {
 
  // Uncaught SyntaxError: missing ) after argument list line 74
- $(".train-schedule").append("<tr class="table-row" id=" + "" + childSnapshot.key()) + "" + ">" +  $(".train-schedule").append("<tr class="table-row" id=" + "" + childSnapshot.key()">" +
-        "<td class="col-xs-3">" + childSnapshot.val().name +
-        "</td>" +
-        "<td class="col-xs-2">" + childSnapshot.val().dest +
-        "</td>" +
-        "<td class="col-xs-2">" + childSnapshot.val().freq +
-        "</td>" +
-        "<td class="col-xs-2">" + childSnapshot.val().nextTrainFormatted +
-        "</td>" +
-        "<td class="col-xs-2">" + childSnapshot.val().minutesTilTrain +
-        "</td>" +
-        "<td class="col-xs-1">" + "<input type="submit" value="remove train" class="remove-train btn btn-primary btn-sm">" + "</td>" +
-        "</tr>");  
+      $("#train-schedule").append("<tr class="table-row" id=" + " " + childSnapshot.key() + " " + ">" +  
+          "<td class="col-xs-3">" + childSnapshot.val().name +
+          "</td>" +
+          "<td class="col-xs-2">" + childSnapshot.val().dest +
+          "</td>" +
+          "<td class="col-xs-2">" + childSnapshot.val().freq +
+          "</td>" +
+          "<td class="col-xs-2">" + childSnapshot.val().nextTrainFormatted +
+          "</td>" +
+          "<td class="col-xs-2">" + childSnapshot.val().minutesTilTrain +
+          "</td>" +
+          "<td class="col-xs-1">" + "<input type="submit" value="remove train" class="remove-train btn btn-primary btn-sm">" + "</td>" +
+          "</tr>");  
     
       // Handle the errors
   }), function(errorObject) {
          // console.log("Errors handled: " + errorObject.code);
   };
 
-  $("body").on("click", ".remove-train", function() {
-  $(this).closest ("tr"),remove();
-  getKey = $(this).parent().parent().attr("id");
-  dataRef.child(getKey).remove();
+    $("body").on("click", ".remove-train", function() {
+    $(this).closest ("tr"),remove();
+    getKey = $(this).parent().parent().attr("id");
+    dataRef.child(getKey).remove();
 
-  });
+    });
   
 //   $(".train-schedule").append("<tr class="table-row" id=" + "" + childSnapshot.key()) + "" + ">" +
 
