@@ -10,7 +10,8 @@
     firebase.initializeApp(config);
 
     // Create a variable to reference the database
-    var dataRef = firebase.database();
+    // var dataRef = firebase.database();
+    var database = firebase.database();
 
     // Initial Values
     var name = "";
@@ -32,6 +33,7 @@
     // Moment.js variables to be used for timing of Trains and Minutes Away
     // Capture Button Click
     $("#add-train").on("click", function() {
+       console.log(this);
       // Don't refresh the page!
       // event.preventDefault();
       // Code in the logic for storing and retrieving the most recent user.
@@ -39,23 +41,23 @@
       dest = $("#dest-input").val().trim();
       next = $("#next-input").val().trim();
       freq = $("#freq-input").val().trim();
-        firstTimeConverted = moment(firstTrainTime, "hh.mm").subtract(1, "years");
-        currentTime = moment();
-        diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-        tRemainder = diffTime % frequency;
-        minutesTilTrain = frequency - tRemainder;
-        nextTrain = moment().add(minutesTilTrain, "minutes");
-        nextTrainFormatted = moment(nextTrain).format("hh.mm");
+         firstTimeConverted = moment(firstTrainTime, "hh.mm").subtract(1, "years");
+         currentTime = moment();
+         diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+         tRemainder = diffTime % frequency;
+         minutesTilTrain = frequency - tRemainder;
+         nextTrain = moment().add(minutesTilTrain, "minutes");
+         nextTrainFormatted = moment(nextTrain).format("hh.mm");
 
 
       // set to .set instead of .push to test
-      keyHolder = dataRef.push({
+      keyHolder = database.ref().push({
         name: name,
         dest: dest,
         next: next,
         freq: freq,
-        nextTrainFormatted: nextTrainFormatted,
-        minutesTilTrain: minutesTilTrain
+         nextTrainFormatted: nextTrainFormatted,
+         minutesTilTrain: minutesTilTrain
       });
 
       $("#name-input").val("");
@@ -63,16 +65,17 @@
       $("#next-input").val("");
       $("#freq-input").val("");
 
-      return false;
+    return false;
 
     });
 
 
     // Firebase watcher + initial loader HINT: .on("child-added")
-  dataRef.on("child_added",function(childSnapshot) {
+  database.ref().on('child_added', function(snapshot){  
+  // dataRef.on("child_added",function(childSnapshot) {
 
  // Uncaught SyntaxError: missing ) after argument list line 74
-      $("#train-schedule").append("<tr class=\"table-row\" id=" + " " + childSnapshot.key() + " " + ">" +  
+      $("#train-schedule").append("<tr class=\"table-row\" id=" + " " + childSnapshot.keyHolder() + " " + ">" +  
           "<td class=\"col-xs-3\">" + childSnapshot.val().name +
           "</td>" +
           "<td class=\"col-xs-2\">" + childSnapshot.val().dest +
@@ -87,15 +90,16 @@
           "</tr>");  
     
       // Handle the errors
-  }), function(errorObject) {
+  }, function(errorObject) {
          // console.log("Errors handled: " + errorObject.code);
-  };
+  });
 
   $("body").on("click", ".remove-train", function() {
   $(this).closest("tr").remove();
   getKey = $(this).parent().parent().attr("id");
-  dataRef.child(getKey).remove();
+  database.ref().child(getKey).remove();
   });
   
+  });
 
 
