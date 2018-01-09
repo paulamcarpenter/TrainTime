@@ -1,4 +1,4 @@
-  // Initialize Firebase
+
     var config = {
       apiKey: "AIzaSyCdPjuC2Ig3yoG9EYxKeuEdyp6Hw1DDCF0",
       authDomain: "train-time-a6f3b.firebaseapp.com",
@@ -9,97 +9,58 @@
     };
     firebase.initializeApp(config);
 
-    // Create a variable to reference the database
-    // var dataRef = firebase.database();
-    var database = firebase.database();
+    var trainData = firebase.database();
 
-    // Initial Values
-    var name = "";
-    var dest = "";
-    var next = "";
-    var freq = "";
-    var nextTrain = "";
-    var minutesAway = "";
-    var firstTimeConverted = "";
-    var currentTime = "";
-    var diffTime = "";
-    var tRemainder = "";
-    var minutesTilTrain = "";
-    var keyHolder = "";
-    var getKey = "";
-
-
-  $(document).ready(function() {
-    // Moment.js variables to be used for timing of Trains and Minutes Away
     // Capture Button Click
-    $("#add-train").on("click", function() {
-       console.log(this);
-      // Don't refresh the page!
-      // event.preventDefault();
+    $("#addTrainBtn").on("click", function() {
       // Code in the logic for storing and retrieving the most recent user.
-      name = $("#name-input").val().trim();
-      dest = $("#dest-input").val().trim();
-      next = $("#next-input").val().trim();
-      freq = $("#freq-input").val().trim();
-         firstTimeConverted = moment(firstTrainTime, "hh.mm").subtract(1, "years");
-         currentTime = moment();
-         diffTime = moment().diff(moment(firstTimeConverted), "minutes");
-         tRemainder = diffTime % frequency;
-         minutesTilTrain = frequency - tRemainder;
-         nextTrain = moment().add(minutesTilTrain, "minutes");
-         nextTrainFormatted = moment(nextTrain).format("hh.mm");
+      var trainName = $("#trainNameInput").val().trim();
+      var destination = $("#destinationInput").val().trim();
+      var firstTrain = moment($("#firstTrainInput").val().trim(),"HH:mm").subtract(10, "years").format("X");
+      var frequency = $("#frequencyInput").val().trim();
 
+      var newTrain = {
+          name: trainName,
+          destination: destination,
+          firstTrain: firstTrain,
+          frequency: frequency
+      }
 
-      // set to .set instead of .push to test
-      keyHolder = database.ref().push({
-        name: name,
-        dest: dest,
-        next: next,
-        freq: freq,
-         nextTrainFormatted: nextTrainFormatted,
-         minutesTilTrain: minutesTilTrain
-      });
+      trainData.ref().push(newTrain);
 
-      $("#name-input").val("");
-      $("#dest-input").val("");
-      $("#next-input").val("");
-      $("#freq-input").val("");
+      alert("Train Added!");
 
-    return false;
+      $("#trainNameInput").val("");
+      $("#destinationInput").val("");
+      $("#firstTrainInput").val("");
+      $("#frequencyInput").val("");
 
-    });
-
+      return false;
+    })
 
     // Firebase watcher + initial loader HINT: .on("child-added")
-  database.ref().on('child_added', function(snapshot){  
-  // dataRef.on("child_added",function(childSnapshot) {
+      trainData.ref().on('child_added', function(snapshot){  
+          var name = snapshot.val().name;
+          var destination = snapshot.val().destination;
+          var frequency = snapshot.val().frequency;
+          var firstTrain = snapshot.val().firstTrain;
 
- // Uncaught SyntaxError: missing ) after argument list line 74
-      $("#train-schedule").append("<tr class=\"table-row\" id=" + " " + childSnapshot.keyHolder() + " " + ">" +  
-          "<td class=\"col-xs-3\">" + childSnapshot.val().name +
-          "</td>" +
-          "<td class=\"col-xs-2\">" + childSnapshot.val().dest +
-          "</td>" +
-          "<td class=\"col-xs-2\">" + childSnapshot.val().freq +
-          "</td>" +
-          "<td class=\"col-xs-2\">" + childSnapshot.val().nextTrainFormatted +
-          "</td>" +
-          "<td class=\"col-xs-2\">" + childSnapshot.val().minutesTilTrain +
-          "</td>" +
-          "<td class=\"col-xs-1\">" + "<input type=\"submit\" value=\"remove train\" class=\"remove-train btn btn-primary btn-sm\">" + "</td>" +
-          "</tr>");  
-    
+          var remainder = moment().diff(moment.unix(firstTrain), "minutes")%frequency;
+          var minutes = frequency - remainder;
+          var arrival = moment().add(minutes, "m").format("hh:mm A");
+
+          console.log(remainder);
+          console.log(minutes);
+          console.log(arrival);
+
+          $("#trainTable > tBody").append("<tr><td>"+name+"</td><td>"+destination+"</td><td>"+frequency+"</td><td>"+arrival+"</td><td>"+minutes+"</td></tr>");
+      })
+
+    // unable to get train schedule to print out tried using this:
+    // $("#train-schedule").text(snapshot.val().name);
+
       // Handle the errors
-  }, function(errorObject) {
-         // console.log("Errors handled: " + errorObject.code);
-  });
-
-  $("body").on("click", ".remove-train", function() {
-  $(this).closest("tr").remove();
-  getKey = $(this).parent().parent().attr("id");
-  database.ref().child(getKey).remove();
-  });
+ 
   
-  });
 
 
